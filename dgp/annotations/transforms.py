@@ -10,6 +10,7 @@ from dgp.annotations.transform_utils import (
     remap_bounding_box_annotations,
     remap_instance_segmentation_2d_annotation,
     remap_semantic_segmentation_2d_annotation,
+    remap_semantic_segmentation_3d_annotation,
 )
 from dgp.utils.accumulate import points_in_cuboid
 
@@ -131,7 +132,8 @@ class OntologyMapper(BaseTransform):
     """
     # This will evolve as handlers for more annotation types are added
     SUPPORTED_ANNOTATION_TYPES = (
-        'bounding_box_2d', 'semantic_segmentation_2d', 'bounding_box_3d', 'instance_segmentation_2d'
+        'bounding_box_2d', 'semantic_segmentation_2d', 'bounding_box_3d', 'instance_segmentation_2d',
+        'semantic_segmentation_3d'
     )
 
     def __init__(self, original_ontology_table, lookup_table, remapped_ontology_table=None):
@@ -194,6 +196,10 @@ class OntologyMapper(BaseTransform):
                 )
             elif annotation_key == 'semantic_segmentation_2d':
                 datum[annotation_key] = remap_semantic_segmentation_2d_annotation(
+                    datum[annotation_key], lookup_table, original_ontology, remapped_ontology
+                )
+            elif annotation_key == 'semantic_segmentation_3d':
+                datum[annotation_key] = remap_semantic_segmentation_3d_annotation(
                     datum[annotation_key], lookup_table, original_ontology, remapped_ontology
                 )
             elif annotation_key == 'instance_segmentation_2d':

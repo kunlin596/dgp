@@ -18,6 +18,7 @@ from dgp.annotations.bounding_box_2d_annotation import BoundingBox2DAnnotationLi
 from dgp.annotations.bounding_box_3d_annotation import BoundingBox3DAnnotationList  # isort:skip
 from dgp.annotations.panoptic_segmentation_2d_annotation import PanopticSegmentation2DAnnotation  # isort:skip
 from dgp.annotations.semantic_segmentation_2d_annotation import SemanticSegmentation2DAnnotation  # isort:skip
+from dgp.annotations.semantic_segmentation_3d_annotation import SemanticSegmentation3DAnnotation  # isort:skip
 from dgp.annotations.key_line_2d_annotation import KeyLine2DAnnotationList  # isort:skip
 from dgp.annotations.key_line_3d_annotation import KeyLine3DAnnotationList  # isort:skip
 from dgp.annotations.key_line_3d_annotation import ProbabilisticKeyLine3DAnnotationList  # isort:skip
@@ -51,6 +52,7 @@ ANNOTATION_REGISTRY = {
     "bounding_box_2d": BoundingBox2DAnnotationList,
     "bounding_box_3d": BoundingBox3DAnnotationList,
     "semantic_segmentation_2d": SemanticSegmentation2DAnnotation,
+    "semantic_segmentation_3d": SemanticSegmentation3DAnnotation,
     "instance_segmentation_2d": PanopticSegmentation2DAnnotation,
     "key_point_2d": KeyPoint2DAnnotationList,
     "key_point_3d": KeyPoint3DAnnotationList,

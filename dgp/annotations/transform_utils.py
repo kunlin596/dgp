@@ -9,6 +9,7 @@ from dgp.annotations import (
     Ontology,
     PanopticSegmentation2DAnnotation,
     SemanticSegmentation2DAnnotation,
+    SemanticSegmentation3DAnnotation,
     SemanticSegmentationOntology,
 )
 from dgp.proto.ontology_pb2 import Ontology as OntologyPB2
@@ -99,6 +100,36 @@ def remap_semantic_segmentation_2d_annotation(
         # pylint: enable=E1137
     # Instantiate SemanticSegmentation2DAnnotation with remapped segmentation image and remapped SemanticSegmentationOntology
     return SemanticSegmentation2DAnnotation(remapped_ontology, remapped_segmentation_image)
+
+
+def remap_semantic_segmentation_3d_annotation(
+    semantic_segmentation_annotation, lookup_table, original_ontology, remapped_ontology
+):
+    """Remap point labels using source-to-target class names.
+
+    Parameters
+    ----------
+    semantic_segmentation_annotation: SemanticSegmentation3DAnnotation
+        Point-aligned labels in the source contiguous label space.
+    lookup_table: dict
+        Source class names mapped to target class names.
+    original_ontology: SemanticSegmentationOntology
+        Source label vocabulary.
+    remapped_ontology: SemanticSegmentationOntology
+        Target label vocabulary.
+
+    Returns
+    -------
+    SemanticSegmentation3DAnnotation
+        Remapped point labels; unmapped classes become void.
+    """
+    labels = semantic_segmentation_annotation.label
+    remapped_labels = np.full_like(labels, Ontology.VOID_ID)
+    for source_name, target_name in lookup_table.items():
+        source_id = original_ontology.name_to_contiguous_id[source_name]
+        target_id = remapped_ontology.name_to_contiguous_id[target_name]
+        remapped_labels[labels == source_id] = target_id
+    return SemanticSegmentation3DAnnotation(remapped_ontology, remapped_labels)
 
 
 def remap_instance_segmentation_2d_annotation(
